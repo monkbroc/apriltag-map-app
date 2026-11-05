@@ -47,3 +47,10 @@ Requirements:
 
 CI (`.github/workflows/eas-build.yml`) runs EAS builds on `v*` tags and on manual dispatch,
 when the `EXPO_TOKEN` repository secret is set.
+
+## License
+
+BSD 2-Clause License. Copyright (c) 2026, Julien Vanier. See [LICENSE.md](LICENSE.md).
+
+The vendored AprilTag library (`modules/apriltag-ar/cpp/apriltag/`, BSD 2-Clause, University of
+Michigan) and the WPILib field layout data (BSD 3-Clause) keep their own licenses.

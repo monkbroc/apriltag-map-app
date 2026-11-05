@@ -70,5 +70,7 @@
         "lines": 80
       }
     }
-  }
+  },
+  "license": "BSD-2-Clause",
+  "author": "Julien Vanier"
 }
