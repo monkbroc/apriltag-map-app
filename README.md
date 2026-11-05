@@ -32,6 +32,15 @@ setx ANDROID_HOME "%LOCALAPPDATA%\Android\Sdk"
 setx JAVA_HOME "C:\Users\<you>\.jdks\jbr-17.0.14"
 ```
 
+Windows only: the default CMake 3.22 hits the 260-character path limit while compiling native
+dependencies (`ninja: error: mkdir(...): No such file or directory`). Install a newer CMake with
+the SDK Manager (SDK Tools → CMake 3.31.6) and add this line to
+`%USERPROFILE%\.gradle\gradle.properties` (your user Gradle config, not the repo):
+
+```properties
+android.cmakeVersion=3.31.6
+```
+
 Then:
 
 ```bash
