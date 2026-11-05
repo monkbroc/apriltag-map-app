@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import com.google.ar.core.ArCoreApk
 import expo.modules.interfaces.permissions.PermissionsStatus
 import expo.modules.kotlin.Promise
+import expo.modules.kotlin.functions.Coroutine
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 import kotlinx.coroutines.delay
