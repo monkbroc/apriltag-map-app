@@ -205,7 +205,7 @@ Alignment is always a **4-DoF** fit: rotation about the vertical axis (yaw) plus
   - TypeScript `strict`, with ESLint and Prettier
   - Unit test coverage ≥ 80% for `src/core/**` (geometry, fmap, merge, diff, alignment)
   - Component tests only for the refine comparison screen and the import screen
-  - No native (XCTest/JUnit) tests. The native module is checked with a manual device checklist.
+  - No XCTest/JUnit tests. The shared C detector bridge is tested on the host with gcc (synthetic tags rendered at known poses) in CI; the platform code is checked with a manual device checklist.
 - **R-7.5 Licensing**: the AprilTag library license (BSD-2) is included in an in-app "Licenses" screen.
 
 ---

@@ -55,11 +55,13 @@ npm run lint
 npm run typecheck
 npm run format:check
 npm test
+npm run test:native   # C detector test, needs gcc (MSYS2 on Windows)
 ```
 
 The unit and screen tests run in Node with no phone: the scan flow is tested by replaying
-simulated scans (`src/testing/simulate.ts`). The native module has no automated tests; after
-changing it, run the manual checklist in [docs/device-test.md](docs/device-test.md) on a phone.
+simulated scans (`src/testing/simulate.ts`). `test:native` compiles the AprilTag C bridge on
+your computer and checks detection and pose on synthetic tags rendered at known poses. The
+Swift and Kotlin code has no automated tests; after changing it, run the manual checklist in [docs/device-test.md](docs/device-test.md) on a phone.
 
 ## Release workflow
 

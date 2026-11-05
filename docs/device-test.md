@@ -1,7 +1,8 @@
 # Device test checklist
 
-The native `apriltag-ar` module has no automated tests (REQUIREMENTS R-7.4). Run this checklist
-on a real iPhone and a real Android phone after changing anything under `modules/apriltag-ar/`.
+The shared C detector bridge is tested automatically (`npm run test:native`, also in CI). The
+Swift and Kotlin code has no automated tests (REQUIREMENTS R-7.4). Run this checklist on a real
+iPhone and a real Android phone after changing anything under `modules/apriltag-ar/`.
 
 Print a few tag36h11 tags at a known size (for example IDs 1, 2 and 3 at 165.1 mm black-border
 edge). Generators: <https://github.com/AprilRobotics/apriltag-imgs> (`tag36h11/`), scaled up so

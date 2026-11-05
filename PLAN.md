@@ -244,7 +244,7 @@ Write the tests first, in each module. Jest runs these in Node with no React Nat
    - Typed events.
    - An `isSupported()` check.
    - A mock implementation that is used under Jest and on unsupported devices, which replays recorded observation JSON.
-7. **Manual device checklist** in `docs/device-test.md` (this replaces native unit tests):
+7. **Host detector test + manual device checklist**: `npm run test:native` builds the C bridge with gcc and checks detection and pose on synthetic tags (also runs in CI). The platform code is checked with `docs/device-test.md`:
    - Point the camera at a tag at a known distance straight ahead. Check that the translation is about (0, 0, −d) in the ARKit camera frame.
    - Check that the correct ID is detected for a few printed tags.
    - Walk between two tags a known distance apart, and check the measured distance.
