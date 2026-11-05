@@ -31,9 +31,9 @@ jobs:
       - name: Skip when EXPO_TOKEN is not configured
         if: env.EXPO_TOKEN == ''
         run: echo "::notice::EXPO_TOKEN secret is not set; skipping EAS build."
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         if: env.EXPO_TOKEN != ''
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         if: env.EXPO_TOKEN != ''
         with:
           node-version: 22
