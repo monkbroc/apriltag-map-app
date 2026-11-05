@@ -32,6 +32,11 @@
     "experiments": {
       "typedRoutes": true
     },
-    "owner": "jvaniers-team"
+    "owner": "jvaniers-team",
+    "extra": {
+      "eas": {
+        "projectId": "874bc557-1d08-4f44-b1f3-d9aeeb23a4f3"
+      }
+    }
   }
 }
