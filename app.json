@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "AprilTag Map",
-    "slug": "apriltag-map-app",
+    "slug": "apriltag-map",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -31,6 +31,7 @@
     "scheme": "apriltagmap",
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "owner": "jvaniers-team"
   }
 }
