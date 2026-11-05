@@ -59,7 +59,7 @@
     "collectCoverageFrom": [
       "src/core/**/*.ts",
       "!src/core/**/*.test.ts",
-      "!src/core/**/index.ts"
+      "!src/core/testUtils.ts"
     ],
     "coverageThreshold": {
       "./src/core/": {
