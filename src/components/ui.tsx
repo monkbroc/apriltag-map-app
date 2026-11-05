@@ -103,16 +103,7 @@ export function ActionMenu({
   );
 }
 
-/** Text prompt dialog (Alert.prompt is iOS-only). */
-export function PromptDialog({
-  visible,
-  title,
-  initialValue = '',
-  confirmLabel = 'Save',
-  validate,
-  onSubmit,
-  onCancel,
-}: {
+interface PromptProps {
   visible: boolean;
   title: string;
   initialValue?: string;
@@ -120,50 +111,57 @@ export function PromptDialog({
   validate?: (value: string) => string | null;
   onSubmit: (value: string) => void;
   onCancel: () => void;
-}) {
+}
+
+/** Text prompt dialog (Alert.prompt is iOS-only). The field resets each time it opens. */
+export function PromptDialog(props: PromptProps) {
+  return (
+    <Modal visible={props.visible} transparent animationType="fade" onRequestClose={props.onCancel}>
+      {props.visible ? <PromptBody {...props} /> : null}
+    </Modal>
+  );
+}
+
+function PromptBody({
+  title,
+  initialValue = '',
+  confirmLabel = 'Save',
+  validate,
+  onSubmit,
+  onCancel,
+}: PromptProps) {
   const t = useTheme();
   const [value, setValue] = useState(initialValue);
   const [touched, setTouched] = useState(false);
   const error = validate?.(value) ?? null;
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="fade"
-      onRequestClose={onCancel}
-      onShow={() => {
-        setValue(initialValue);
-        setTouched(false);
-      }}
-    >
-      <View style={styles.backdropCenter}>
-        <View style={[styles.dialog, { backgroundColor: t.surface }]}>
-          <Text style={[styles.dialogTitle, { color: t.text }]}>{title}</Text>
-          <TextInput
-            accessibilityLabel={title}
-            autoFocus
-            value={value}
-            onChangeText={(v) => {
-              setValue(v);
-              setTouched(true);
-            }}
-            style={[styles.input, { color: t.text, borderColor: t.border }]}
-            placeholderTextColor={t.muted}
+    <View style={styles.backdropCenter}>
+      <View style={[styles.dialog, { backgroundColor: t.surface }]}>
+        <Text style={[styles.dialogTitle, { color: t.text }]}>{title}</Text>
+        <TextInput
+          accessibilityLabel={title}
+          autoFocus
+          value={value}
+          onChangeText={(v) => {
+            setValue(v);
+            setTouched(true);
+          }}
+          style={[styles.input, { color: t.text, borderColor: t.border }]}
+          placeholderTextColor={t.muted}
+        />
+        {touched && error ? <Text style={{ color: t.danger }}>{error}</Text> : null}
+        <View style={styles.row}>
+          <Button title="Cancel" variant="secondary" onPress={onCancel} style={styles.flex} />
+          <Button
+            title={confirmLabel}
+            disabled={!!error}
+            onPress={() => onSubmit(value.trim())}
+            style={styles.flex}
           />
-          {touched && error ? <Text style={{ color: t.danger }}>{error}</Text> : null}
-          <View style={styles.row}>
-            <Button title="Cancel" variant="secondary" onPress={onCancel} style={styles.flex} />
-            <Button
-              title={confirmLabel}
-              disabled={!!error}
-              onPress={() => onSubmit(value.trim())}
-              style={styles.flex}
-            />
-          </View>
         </View>
       </View>
-    </Modal>
+    </View>
   );
 }
 
