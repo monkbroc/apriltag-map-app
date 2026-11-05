@@ -24,9 +24,6 @@
       "package": "com.monkbroc.apriltagmap",
       "permissions": ["android.permission.CAMERA"]
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
     "plugins": ["expo-router", "expo-status-bar", "expo-sharing"],
     "scheme": "apriltagmap",
     "experiments": {
@@ -37,6 +34,7 @@
       "eas": {
         "projectId": "874bc557-1d08-4f44-b1f3-d9aeeb23a4f3"
       }
-    }
+    },
+    "platforms": ["ios", "android"]
   }
 }
