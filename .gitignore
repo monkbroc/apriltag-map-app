@@ -46,3 +46,8 @@ yarn-error.*
 *.ipa
 coverage/
 *.keystore
+
+# native module build outputs (Gradle / CMake)
+modules/*/android/build/
+modules/*/android/.cxx/
+modules/*/android/.gradle/
