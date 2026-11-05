@@ -4,3 +4,4 @@ android
 ios
 package-lock.json
 src/data/builtinSets/*.json
+scripts/data/*.json
