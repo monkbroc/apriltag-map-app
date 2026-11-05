@@ -11,6 +11,7 @@ export const AR_CAMERA_FROM_CV_CAMERA: Mat4 = mat4FromRT([1, 0, 0, 0, -1, 0, 0, 
 export interface FrameLike {
   timestamp: number;
   tracking: 'normal' | 'limited' | 'notAvailable';
+  trackingReason?: string;
   worldFromCamera: readonly number[];
   detections: readonly {
     id: number;
@@ -19,6 +20,8 @@ export interface FrameLike {
     pixelSize: number;
     viewAngleDeg: number;
     cameraFromTag: readonly number[];
+    /** View-normalized quad corners, for the overlay. */
+    corners?: readonly number[];
   }[];
 }
 
