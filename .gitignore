@@ -51,3 +51,6 @@ coverage/
 modules/*/android/build/
 modules/*/android/.cxx/
 modules/*/android/.gradle/
+
+# machine-specific environment setup
+set-env.bat
