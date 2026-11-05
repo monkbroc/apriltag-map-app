@@ -1,0 +1,49 @@
+name: EAS Build
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: Build profile
+        type: choice
+        options: [preview, production]
+        default: preview
+      platform:
+        description: Platform
+        type: choice
+        options: [all, android, ios]
+        default: all
+
+concurrency:
+  group: eas-build-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      PROFILE: ${{ inputs.profile || 'production' }}
+      PLATFORM: ${{ inputs.platform || 'all' }}
+    steps:
+      - name: Skip when EXPO_TOKEN is not configured
+        if: env.EXPO_TOKEN == ''
+        run: echo "::notice::EXPO_TOKEN secret is not set; skipping EAS build."
+      - uses: actions/checkout@v4
+        if: env.EXPO_TOKEN != ''
+      - uses: actions/setup-node@v4
+        if: env.EXPO_TOKEN != ''
+        with:
+          node-version: 22
+          cache: npm
+      - uses: expo/expo-github-action@v8
+        if: env.EXPO_TOKEN != ''
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - run: npm ci
+        if: env.EXPO_TOKEN != ''
+      - run: eas build --platform "$PLATFORM" --profile "$PROFILE" --non-interactive --no-wait
+        if: env.EXPO_TOKEN != ''

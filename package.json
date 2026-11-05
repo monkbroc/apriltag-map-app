@@ -44,7 +44,11 @@
     "test": "jest",
     "test:ci": "jest --ci --coverage",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "build:android": "node scripts/build-android.mjs",
+    "build:android:cloud": "npx eas-cli@latest build --platform android --profile preview",
+    "build:ios": "npx eas-cli@latest build --platform ios --profile preview --local",
+    "build:ios:cloud": "npx eas-cli@latest build --platform ios --profile preview"
   },
   "private": true,
   "jest": {
