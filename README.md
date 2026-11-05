@@ -14,7 +14,25 @@ JavaScript from your computer. EAS is not required for Android.
 
 ### 1. Build and install the development build (once)
 
-Android, locally (needs Android Studio's SDK, NDK and CMake, and a phone with USB debugging):
+Android, locally (needs Android Studio's SDK, NDK and CMake, and a phone with USB debugging).
+Set these two environment variables once; `npm run android` and `npm run build:android`
+stop with an error if they are missing or wrong:
+
+- `ANDROID_HOME`: the Android SDK, usually `%LOCALAPPDATA%\Android\Sdk` on Windows
+- `JAVA_HOME`: a JDK 17 or 21 (React Native does not support newer JDKs), for example
+  Android Studio's `jbr` folder or a Temurin 17 install
+
+On Windows, for example (then open a new terminal):
+
+```bash
+setx ANDROID_HOME "%LOCALAPPDATA%\Android\Sdk"
+```
+
+```bash
+setx JAVA_HOME "C:\Users\<you>\.jdks\jbr-17.0.14"
+```
+
+Then:
 
 ```bash
 npm install
@@ -89,7 +107,8 @@ install a new release build (or use EAS Update, which is not set up in this proj
 
 Requirements:
 
-- **Android local build:** Android Studio (SDK, NDK, CMake), JDK 17 and `ANDROID_HOME` set.
+- **Android local build:** Android Studio (SDK, NDK, CMake), and `ANDROID_HOME` and `JAVA_HOME`
+  (JDK 17 or 21) set as described under Development workflow.
   To sign with your own key, set `ANDROID_KEYSTORE_PATH`, `ANDROID_KEYSTORE_PASSWORD`,
   `ANDROID_KEY_ALIAS` and `ANDROID_KEY_PASSWORD`; otherwise the debug keystore is used.
   Install with `adb install -r <apk>`.

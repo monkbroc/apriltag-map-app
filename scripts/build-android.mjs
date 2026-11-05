@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Builds a release APK locally (Windows, macOS or Linux).
 //
-// Requires the Android SDK (ANDROID_HOME) and JDK 17. Signing:
+// Requires ANDROID_HOME and JAVA_HOME (JDK 17 or 21), checked by check-android-env.mjs. Signing:
 //   set ANDROID_KEYSTORE_PATH, ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS and
 //   ANDROID_KEY_PASSWORD to sign with your own key. Without them the build is
 //   signed with the debug keystore, which is fine for sideloading during development.
