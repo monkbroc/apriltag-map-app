@@ -11,15 +11,15 @@ Reference: [Limelight .fmap specification](https://docs.limelightvision.io/docs/
 
 ## 1. Terminology
 
-| Term | Meaning |
-|---|---|
-| **Tag set** | A named collection of fiducials, saved locally. It is exported as one `.fmap` file. |
-| **Fiducial / tag** | One AprilTag entry: `id`, `size`, `transform`, `family`, `unique`. |
-| **Scan** | A camera session that collects repeated observations of tags in the AR world frame. |
+| Term               | Meaning                                                                                                                                         |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Tag set**        | A named collection of fiducials, saved locally. It is exported as one `.fmap` file.                                                             |
+| **Fiducial / tag** | One AprilTag entry: `id`, `size`, `transform`, `family`, `unique`.                                                                              |
+| **Scan**           | A camera session that collects repeated observations of tags in the AR world frame.                                                             |
 | **AR world frame** | The coordinate frame ARKit/ARCore sets up when the session starts. It is gravity-aligned (+Y up) but otherwise arbitrary relative to the field. |
-| **Field frame** | The coordinate frame of the `.fmap` file (see §3.3). |
-| **Alignment** | The transform (yaw rotation + translation) that maps the AR world frame onto the field frame. |
-| **Observation** | One detection of one tag in one camera frame, turned into a pose in the AR world frame. |
+| **Field frame**    | The coordinate frame of the `.fmap` file (see §3.3).                                                                                            |
+| **Alignment**      | The transform (yaw rotation + translation) that maps the AR world frame onto the field frame.                                                   |
+| **Observation**    | One detection of one tag in one camera frame, turned into a pose in the AR world frame.                                                         |
 
 ---
 
@@ -99,7 +99,7 @@ Each saved tag set also stores this metadata, which is not in the `.fmap` file:
   - how many tags have been seen at least the minimum number of times (`MIN_OBSERVATIONS`, 10)
   - a per-tag chip list, colored by observation count
 - **R-5.3.3** Observations are only accepted when **all** of these hold (thresholds in `config.ts`):
-  - the AR tracking state is *normal*
+  - the AR tracking state is _normal_
   - the AprilTag decision margin is at least a threshold
   - the tag's apparent size is at least a minimum pixel size
   - the viewing angle is at most a maximum (60° off-normal)

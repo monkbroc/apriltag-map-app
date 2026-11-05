@@ -22,12 +22,13 @@ and tested on Windows before any device work starts.
    - JDK 17
 
    Then set `ANDROID_HOME` and add `platform-tools` to `PATH`.
+
 4. Install the **EAS CLI**: `npm i -g eas-cli`, then `eas login`. Create an Expo account if needed.
 5. Apple Developer Program membership (needed to sign iOS builds for internal distribution or TestFlight).
 6. Prepare test devices:
    - an ARCore-supported Android phone, with USB debugging enabled
    - an ARKit-capable iPhone, registered for internal distribution with `eas device:create`
-7. *(Optional, for local iOS builds)* A Mac with Xcode and CocoaPods.
+7. _(Optional, for local iOS builds)_ A Mac with Xcode and CocoaPods.
 
 ## Phase 1 — Project scaffold
 
@@ -55,7 +56,7 @@ and tested on Windows before any device work starts.
 6. Create the folder structure:
 
    ```
-   app/                      # expo-router screens
+   src/app/                  # expo-router screens (Expo SDK 58 convention)
      index.tsx               # library (home)
      sets/[id]/index.tsx     # set detail (Map | Table | JSON tabs)
      sets/[id]/edit-tag.tsx
@@ -110,6 +111,7 @@ and tested on Windows before any device work starts.
      - then prints the APK path (`android/app/build/outputs/apk/release/app-release.apk`)
 
      Sign the release with a keystore set in `android/gradle.properties`, loaded from environment variables. Without one, fall back to the debug keystore, which is fine for sideloading during development.
+
    - npm scripts:
      - `"build:android": "node scripts/build-android.mjs"`
      - `"build:ios": "eas build --platform ios --profile preview --local"` (macOS + Xcode only; writes the `.ipa` to the project root)
