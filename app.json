@@ -8,7 +8,10 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.monkbroc.apriltagmap"
+      "bundleIdentifier": "com.monkbroc.apriltagmap",
+      "infoPlist": {
+        "NSCameraUsageDescription": "The camera is used to scan AprilTags and track the phone position with ARKit while building field maps."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -18,7 +21,8 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.monkbroc.apriltagmap"
+      "package": "com.monkbroc.apriltagmap",
+      "permissions": ["android.permission.CAMERA"]
     },
     "web": {
       "favicon": "./assets/favicon.png"

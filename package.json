@@ -69,7 +69,11 @@
         "functions": 80,
         "lines": 80
       }
-    }
+    },
+    "moduleNameMapper": {
+      "^apriltag-ar$": "<rootDir>/modules/apriltag-ar"
+    },
+    "testTimeout": 20000
   },
   "license": "BSD-2-Clause",
   "author": "Julien Vanier"

@@ -1,0 +1,10 @@
+{
+  "platforms": ["apple", "android"],
+  "apple": {
+    "modules": ["ApriltagArModule"],
+    "podspecPath": "ApriltagAr.podspec"
+  },
+  "android": {
+    "modules": ["expo.modules.apriltagar.ApriltagArModule"]
+  }
+}

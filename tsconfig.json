@@ -5,7 +5,8 @@
     "noUncheckedIndexedAccess": true,
     "types": ["jest"],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "apriltag-ar": ["./modules/apriltag-ar"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"],
