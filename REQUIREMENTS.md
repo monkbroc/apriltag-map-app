@@ -49,7 +49,7 @@ Reference: [Limelight .fmap specification](https://docs.limelightvision.io/docs/
 - **R-3.1.5** `size` is in **millimeters**. Translations are in **meters**.
 - **R-3.1.6** `unique` is `1` for every tag by default.
 - **R-3.1.7** Fiducials are written sorted by `id`. Numbers are written with at most 6 decimal places. The JSON is pretty-printed with 2-space indentation.
-- **R-3.1.8** Rotation matrices are re-orthonormalized before writing, so that det = +1 and RᵀR = I within 1e-9.
+- **R-3.1.8** Rotation matrices are re-orthonormalized before writing (det = +1 and RᵀR = I within 1e-9 before rounding; within 1e-5 after the 6-decimal rounding of R-3.1.7).
 
 ### 3.2 Local tag set record
 
