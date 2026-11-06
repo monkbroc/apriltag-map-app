@@ -9,6 +9,7 @@ import {
   type StyleProp,
   type ViewStyle,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { spacing, useTheme } from './theme';
 
@@ -70,10 +71,16 @@ export function ActionMenu({
   onClose: () => void;
 }) {
   const t = useTheme();
+  const insets = useSafeAreaInsets();
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <Pressable style={styles.backdrop} onPress={onClose} accessibilityLabel="Close menu">
-        <View style={[styles.sheet, { backgroundColor: t.surface }]}>
+        <View
+          style={[
+            styles.sheet,
+            { backgroundColor: t.surface, paddingBottom: insets.bottom + spacing.md },
+          ]}
+        >
           {title ? <Text style={[styles.sheetTitle, { color: t.muted }]}>{title}</Text> : null}
           {items.map((item) => (
             <Pressable
@@ -165,9 +172,42 @@ function PromptBody({
   );
 }
 
-export function Screen({ children }: { children: ReactNode }) {
+/**
+ * Screen container that keeps content out of the system navigation bar (Android draws apps edge
+ * to edge). A `footer` is pinned to the bottom and extends under the bar with its own padding.
+ */
+export function Screen({ children, footer }: { children: ReactNode; footer?: ReactNode }) {
   const t = useTheme();
-  return <View style={[styles.screen, { backgroundColor: t.background }]}>{children}</View>;
+  const insets = useSafeAreaInsets();
+  return (
+    <View
+      style={[
+        styles.screen,
+        {
+          backgroundColor: t.background,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+          paddingBottom: footer ? 0 : insets.bottom,
+        },
+      ]}
+    >
+      {children}
+      {footer ? (
+        <View
+          style={[
+            styles.footer,
+            {
+              borderColor: t.border,
+              backgroundColor: t.surface,
+              paddingBottom: insets.bottom + spacing.md,
+            },
+          ]}
+        >
+          {footer}
+        </View>
+      ) : null}
+    </View>
+  );
 }
 
 export function SegmentedControl<T extends string>({
@@ -221,7 +261,13 @@ export const styles = StyleSheet.create({
     padding: spacing.xl,
     backgroundColor: 'rgba(0,0,0,0.4)',
   },
-  sheet: { borderTopLeftRadius: 16, borderTopRightRadius: 16, paddingBottom: spacing.xl },
+  sheet: { borderTopLeftRadius: 16, borderTopRightRadius: 16 },
+  footer: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+    padding: spacing.md,
+    borderTopWidth: StyleSheet.hairlineWidth,
+  },
   sheetTitle: { padding: spacing.lg, fontSize: 14, textAlign: 'center' },
   menuItem: {
     paddingVertical: spacing.lg,

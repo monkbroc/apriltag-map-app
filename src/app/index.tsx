@@ -49,7 +49,19 @@ export default function LibraryScreen() {
   );
 
   return (
-    <Screen>
+    <Screen
+      footer={
+        <>
+          <Button title="New scan" onPress={() => router.push('/scan/new')} style={styles.flex} />
+          <Button
+            title="Import .fmap"
+            variant="secondary"
+            onPress={() => router.push('/import')}
+            style={styles.flex}
+          />
+        </>
+      }
+    >
       <Stack.Screen
         options={{
           headerRight: () => (
@@ -69,15 +81,6 @@ export default function LibraryScreen() {
         renderItem={renderItem}
         contentContainerStyle={styles.list}
       />
-      <View style={[styles.footer, { borderColor: t.border, backgroundColor: t.surface }]}>
-        <Button title="New scan" onPress={() => router.push('/scan/new')} style={styles.flex} />
-        <Button
-          title="Import .fmap"
-          variant="secondary"
-          onPress={() => router.push('/import')}
-          style={styles.flex}
-        />
-      </View>
       {actions.element}
     </Screen>
   );
@@ -95,11 +98,4 @@ const styles = StyleSheet.create({
   },
   name: { fontSize: 17, fontWeight: '600', marginBottom: 2 },
   more: { paddingHorizontal: spacing.sm },
-  footer: {
-    flexDirection: 'row',
-    gap: spacing.sm,
-    padding: spacing.md,
-    paddingBottom: spacing.xl,
-    borderTopWidth: StyleSheet.hairlineWidth,
-  },
 });

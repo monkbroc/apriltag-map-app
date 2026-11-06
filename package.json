@@ -75,7 +75,10 @@
     "moduleNameMapper": {
       "^apriltag-ar$": "<rootDir>/modules/apriltag-ar"
     },
-    "testTimeout": 20000
+    "testTimeout": 20000,
+    "setupFiles": [
+      "<rootDir>/jest.setup.js"
+    ]
   },
   "license": "BSD-2-Clause",
   "author": "Julien Vanier"

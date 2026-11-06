@@ -1,6 +1,6 @@
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text } from 'react-native';
 
 import { FieldMap } from '@/components/FieldMap';
 import { JsonView } from '@/components/JsonView';
@@ -32,7 +32,23 @@ export default function SetDetailScreen() {
   };
 
   return (
-    <Screen>
+    <Screen
+      footer={
+        <>
+          <Button
+            title="Refine"
+            onPress={() => router.push(`/scan/session?refine=${set.id}`)}
+            style={styles.flex}
+          />
+          <Button
+            title={set.builtin ? 'Edit a copy' : 'Add tag'}
+            variant="secondary"
+            onPress={() => editTag('new')}
+            style={styles.flex}
+          />
+        </>
+      }
+    >
       <Stack.Screen
         options={{
           title: set.name,
@@ -69,19 +85,6 @@ export default function SetDetailScreen() {
         </ScrollView>
       ) : null}
       {tab === 'json' ? <JsonView fiducials={set.fiducials} /> : null}
-      <View style={[styles.footer, { borderColor: t.border, backgroundColor: t.surface }]}>
-        <Button
-          title="Refine"
-          onPress={() => router.push(`/scan/session?refine=${set.id}`)}
-          style={styles.flex}
-        />
-        <Button
-          title={set.builtin ? 'Edit a copy' : 'Add tag'}
-          variant="secondary"
-          onPress={() => editTag('new')}
-          style={styles.flex}
-        />
-      </View>
       {actions.element}
       {copy.element}
     </Screen>
@@ -91,11 +94,4 @@ export default function SetDetailScreen() {
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   pad: { padding: spacing.md, gap: spacing.md },
-  footer: {
-    flexDirection: 'row',
-    gap: spacing.sm,
-    padding: spacing.md,
-    paddingBottom: spacing.xl,
-    borderTopWidth: StyleSheet.hairlineWidth,
-  },
 });
