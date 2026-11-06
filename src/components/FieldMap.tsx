@@ -23,6 +23,8 @@ export interface MapTag {
 }
 
 const MAX_ZOOM = 12;
+/** Font size the tag IDs are laid out at before scaling into the map. */
+const LABEL_FONT = 10;
 
 /**
  * Top-down field map (R-5.7). Field +X points right and +Y up on screen; the axes are drawn at
@@ -170,16 +172,20 @@ export function FieldMap({
         />
         {!ghost ? (
           // The ID sits inside its own dot so it can't be mistaken for a neighbor's label.
-          <SvgText
-            x={sx(x)}
-            y={sy(y) + fontSize * 0.36}
-            fontSize={fontSize}
-            fontWeight="bold"
-            fill={t.tagText}
-            textAnchor="middle"
-          >
-            {tag.id}
-          </SvgText>
+          // Laid out at a normal font size and scaled down: Android mis-measures text at the tiny
+          // sizes used in this meter-based viewBox, which pushed the ID off-center.
+          <G transform={`translate(${sx(x)}, ${sy(y)}) scale(${fontSize / LABEL_FONT})`}>
+            <SvgText
+              x={0}
+              y={LABEL_FONT * 0.36}
+              fontSize={LABEL_FONT}
+              fontWeight="bold"
+              fill={t.tagText}
+              textAnchor="middle"
+            >
+              {tag.id}
+            </SvgText>
+          </G>
         ) : null}
       </G>
     );
