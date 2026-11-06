@@ -18,7 +18,8 @@ const fiducialSchema = z.object({
   id: z.number().int().nonnegative(),
   size: z.number().positive(),
   transform: z.array(z.number()).length(16),
-  unique: z.number().int().optional(),
+  // The spec example uses 1; Limelight's downloadable maps use true.
+  unique: z.union([z.number().int(), z.boolean()]).optional(),
 });
 
 const fmapSchema = z.object({
@@ -58,7 +59,7 @@ export function parseFmap(text: string): ParseResult {
   const out: Fiducial[] = [];
   for (const f of fiducials) {
     const label = `Tag ${f.id}`;
-    const unique = f.unique ?? 1;
+    const unique = f.unique === undefined ? 1 : Number(f.unique);
     if (f.family !== TAG_FAMILY) {
       errors.push(`${label}: family "${f.family}" is not supported (expected "${TAG_FAMILY}").`);
     }

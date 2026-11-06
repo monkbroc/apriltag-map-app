@@ -18,6 +18,7 @@ interface BuiltinSource {
 const sources: BuiltinSource[] = [
   {
     // Source: WPILib v2026.2.2 2026-rebuilt-welded.json (BSD-3-Clause), converted to field center.
+    // Matches Limelight's downloadable FRC2026_WELDED.fmap within 0.001 mm.
     id: 'builtin-frc2026',
     name: 'FRC 2026',
     fmap: frc2026,

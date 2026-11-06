@@ -89,6 +89,28 @@ describe('parseFmap', () => {
     if (!r.ok) expect(r.errors.join('\n')).toMatch(message);
   });
 
+  it('accepts boolean unique, as in Limelight downloadable maps', () => {
+    const r = parseFmap(
+      docText([
+        { ...tag(1), unique: true },
+        { ...tag(2), unique: false },
+      ]),
+    );
+    if (!r.ok) throw new Error(r.errors.join());
+    expect(r.doc.fiducials.map((f) => f.unique)).toEqual([1, 0]);
+    expect(serializeFmap(r.doc.fiducials)).toContain('"unique": 1');
+  });
+
+  it('rejects duplicate ids when unique is true', () => {
+    const r = parseFmap(
+      docText([
+        { ...tag(4), unique: true },
+        { ...tag(4), unique: true },
+      ]),
+    );
+    expect(r.ok).toBe(false);
+  });
+
   it('allows repeated ids when unique is 0', () => {
     const r = parseFmap(
       docText([

@@ -47,7 +47,7 @@ Reference: [Limelight .fmap specification](https://docs.limelightvision.io/docs/
 - **R-3.1.3** Every fiducial's `family` is always `"apriltag3_36h11_classic"`. On import, the family is accepted only if it equals this value. Other families are rejected with an error that names the tag.
 - **R-3.1.4** `transform` is 16 numbers in row-major order: a 3×3 rotation in indices 0–2, 4–6 and 8–10; translation in meters at indices 3, 7 and 11; and a bottom row of `0,0,0,1`.
 - **R-3.1.5** `size` is in **millimeters**. Translations are in **meters**.
-- **R-3.1.6** `unique` is `1` for every tag by default.
+- **R-3.1.6** `unique` is written as `1` for every tag by default. On import, `true`/`false` (used by Limelight's downloadable maps) are accepted as `1`/`0`.
 - **R-3.1.7** Fiducials are written sorted by `id`. Numbers are written with at most 6 decimal places. The JSON is pretty-printed with 2-space indentation.
 - **R-3.1.8** Rotation matrices are re-orthonormalized before writing (det = +1 and RᵀR = I within 1e-9 before rounding; within 1e-5 after the 6-decimal rounding of R-3.1.7).
 
@@ -68,7 +68,7 @@ Each saved tag set also stores this metadata, which is not in the `.fmap` file:
 
 ## 4. Built-in tag sets
 
-- **R-4.1** The app ships with one read-only built-in set: **FRC 2026**. Its data is generated from the official FRC 2026 field layout (WPILib / Limelight published layout for the 2026 game) and is converted to the field-center `.fmap` convention if needed.
+- **R-4.1** The app ships with one read-only built-in set: **FRC 2026**. Its data is generated from WPILib's official 2026 welded field layout, shifted to the field-center `.fmap` convention. It matches Limelight's downloadable `FRC2026_WELDED.fmap` within 0.001 mm (checked 2026-11-06).
 - **R-4.2** Built-in sets cannot be overwritten, renamed or deleted:
   - Refining a built-in set offers only "Save as new".
   - Starting to edit a built-in set asks for a name and creates an editable user copy first.
