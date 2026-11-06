@@ -26,12 +26,16 @@ interface ScanSessionState {
   excludedIds: number[];
   /** Fresh mode: hand-entered WPIBlue field poses of the reference tags (R-5.4.2). */
   freshReferences: Record<number, PoseFields>;
+  /** True once the default reference tag was picked, so the user can untick it (R-5.4.2). */
+  freshDefaultApplied: boolean;
 
   start: (mode: ScanMode, referenceSetId?: string) => void;
   ingestFrame: (frame: FrameLike) => void;
   setPaused: (paused: boolean) => void;
   toggleExcluded: (id: number) => void;
   setFreshReference: (id: number, pose: PoseFields | null) => void;
+  /** Pick the default fresh reference tag, at most once per scan. */
+  applyFreshDefault: (id: number, pose: PoseFields) => void;
   /** Averaged poses in the AR world frame. */
   aggregated: () => AggregatedTag[];
 }
@@ -49,6 +53,7 @@ const initial = {
   paused: false,
   excludedIds: [],
   freshReferences: {},
+  freshDefaultApplied: false,
 };
 
 export const useScanSession = create<ScanSessionState>((set, get) => ({
@@ -89,6 +94,13 @@ export const useScanSession = create<ScanSessionState>((set, get) => ({
       else delete next[id];
       return { freshReferences: next };
     }),
+
+  applyFreshDefault: (id, pose) =>
+    set((s) =>
+      s.freshDefaultApplied
+        ? {}
+        : { freshDefaultApplied: true, freshReferences: { ...s.freshReferences, [id]: pose } },
+    ),
 
   aggregated: () => accumulator.results(),
 }));

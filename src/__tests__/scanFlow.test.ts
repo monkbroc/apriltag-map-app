@@ -105,6 +105,22 @@ describe('scan flow replay', () => {
     }
   });
 
+  it('picks a default fresh reference once and lets the user untick it', () => {
+    const origin = { x: 0, y: 0, z: 0, yawDeg: 0, pitchDeg: 0, rollDeg: 0 };
+    scan(simulateScan(actual), 'fresh');
+    const s = () => useScanSession.getState();
+    s().applyFreshDefault(1, origin);
+    expect(Object.keys(s().freshReferences)).toEqual(['1']);
+    s().setFreshReference(1, null);
+    s().applyFreshDefault(1, origin); // the align screen re-renders: no re-add
+    expect(s().freshReferences).toEqual({});
+    expect(computeScanOutcome(s().aggregated(), []).ok).toBe(false);
+    // A new scan gets the default again.
+    s().start('fresh');
+    s().applyFreshDefault(2, origin);
+    expect(Object.keys(s().freshReferences)).toEqual(['2']);
+  });
+
   it('reports when no tag was seen often enough', () => {
     const state = scan(simulateScan(actual, { framesPerTag: 3 }));
     expect(computeScanOutcome(state.aggregated(), frc2026.fiducials)).toEqual({

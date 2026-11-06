@@ -65,8 +65,15 @@ export default function AlignScreen() {
   const router = useRouter();
   const userSets = useLibrary((s) => s.userSets);
   const session = useScanSession();
-  const { mode, referenceSetId, freshReferences, excludedIds, setFreshReference, toggleExcluded } =
-    session;
+  const {
+    mode,
+    referenceSetId,
+    freshReferences,
+    excludedIds,
+    setFreshReference,
+    applyFreshDefault,
+    toggleExcluded,
+  } = session;
   const aggregated = useMemo(() => session.aggregated(), [session]);
   const eligible = aggregated.filter((a) => a.count >= MIN_OBSERVATIONS);
   const referenceSet = referenceSetId ? findSet(userSets, referenceSetId) : undefined;
@@ -74,10 +81,8 @@ export default function AlignScreen() {
   // Fresh mode default: the lowest-numbered well-seen tag at the origin.
   const firstEligible = eligible[0]?.tagId;
   useEffect(() => {
-    if (mode === 'fresh' && firstEligible !== undefined && !Object.keys(freshReferences).length) {
-      setFreshReference(firstEligible, ORIGIN);
-    }
-  }, [mode, firstEligible, freshReferences, setFreshReference]);
+    if (mode === 'fresh' && firstEligible !== undefined) applyFreshDefault(firstEligible, ORIGIN);
+  }, [mode, firstEligible, applyFreshDefault]);
 
   const reference = useMemo(
     () =>
@@ -131,7 +136,12 @@ export default function AlignScreen() {
             accessibilityRole="alert"
             style={[styles.box, { borderColor: t.danger, backgroundColor: t.surface }]}
           >
-            <Text style={{ color: t.danger }}>✕ {OUTCOME_MESSAGES[outcome.error]}</Text>
+            <Text style={{ color: t.danger }}>
+              ✕{' '}
+              {mode === 'fresh' && !Object.keys(freshReferences).length
+                ? 'Turn on at least one reference tag and enter its field pose.'
+                : OUTCOME_MESSAGES[outcome.error]}
+            </Text>
           </View>
         )}
 
