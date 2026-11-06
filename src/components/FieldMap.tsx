@@ -65,7 +65,8 @@ export function FieldMap({
   const sy = (y: number) => bounds.halfY - y;
   const markerR = Math.max(width, height) / 90;
   const arrowLen = markerR * 3.2;
-  const fontSize = markerR * 2.2;
+  // Sized so two-digit IDs fit inside the dot.
+  const fontSize = markerR * 1.15;
   const prevIds = new Set((previous ?? []).map((p) => p.id));
   const blueX = -field.lengthM / 2;
   const blueY = -field.widthM / 2;
@@ -163,16 +164,18 @@ export function FieldMap({
           cx={sx(x)}
           cy={sy(y)}
           r={markerR}
-          fill={ghost ? 'none' : color}
+          fill={ghost ? 'none' : t.tagFill}
           stroke={color}
-          strokeWidth={markerR / 3}
+          strokeWidth={markerR / 6}
         />
         {!ghost ? (
+          // The ID sits inside its own dot so it can't be mistaken for a neighbor's label.
           <SvgText
             x={sx(x)}
-            y={sy(y) - markerR * 1.6}
+            y={sy(y) + fontSize * 0.36}
             fontSize={fontSize}
-            fill={t.text}
+            fontWeight="bold"
+            fill={t.tagText}
             textAnchor="middle"
           >
             {tag.id}

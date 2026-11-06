@@ -14,6 +14,8 @@ const light = {
   red: '#c62828',
   fieldLine: '#9aa3ae',
   ghost: '#9aa3ae',
+  tagFill: '#9cc4ff',
+  tagText: '#0b1f44',
 };
 
 export type Theme = typeof light;
@@ -32,6 +34,8 @@ const dark: Theme = {
   red: '#ef5350',
   fieldLine: '#5b6472',
   ghost: '#5b6472',
+  tagFill: '#8fb8ff',
+  tagText: '#0b1f44',
 };
 
 export function useTheme(): Theme {
