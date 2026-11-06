@@ -62,6 +62,7 @@ Each saved tag set also stores this metadata, which is not in the `.fmap` file:
 
 - **R-3.3.1** The field frame matches Limelight's published FRC `.fmap` files: **origin at the center of the field**, +X along the field length, +Y along the field width, +Z up, right-handed.
 - **R-3.3.2** A tag's transform maps tag-local coordinates to field coordinates, using the same tag-local axis convention as the Limelight FRC maps. The built-in set (§4) is the reference implementation of this convention. A unit test checks that a known tag in the built-in set faces the expected direction.
+- **R-3.3.4** **WPIBlue in the UI.** The map, tag table, tag editor and fresh-scan reference poses show and accept positions in WPIBlue (Limelight "Field Space (FRC WPIBlue)", as in WPILib): origin at the blue-alliance corner, same axes, so x = x_center + length/2 and y = y_center + width/2. Rotation is the same in both frames. Stored sets, `.fmap` import/export and the JSON view stay field-centered (R-3.3.1). Sets without their own field size (fresh scans, imports) use the FRC 2026 field size.
 - **R-3.3.3** The UI shows rotation as **yaw / pitch / roll in degrees** (intrinsic Z-Y-X). It converts to and from the matrix with a round-trip error below 1e-6.
 
 ---
@@ -119,7 +120,7 @@ Alignment is always a **4-DoF** fit: rotation about the vertical axis (yaw) plus
   - With 2 or more shared tags at different XY positions, fit on positions.
   - With exactly 1 shared tag, use that tag's position and yaw.
   - With no shared tags, show an error and allow the user to rescan or discard.
-- **R-5.4.2** **Fresh mode**: the user picks one or more **reference tags** and gives each a field pose. The pose is typed in by hand (x/y/z in meters and yaw/pitch/roll in degrees). The default pose is the origin with identity rotation. Alignment uses the same fit as R-5.4.1.
+- **R-5.4.2** **Fresh mode**: the user picks one or more **reference tags** and gives each a field pose. The pose is typed in by hand (x/y/z in meters and yaw/pitch/roll in degrees). The pose is in WPIBlue (R-3.3.4); the default is the WPIBlue origin with identity rotation. Alignment uses the same fit as R-5.4.1.
 - **R-5.4.3** Show the alignment's RMS residual and the per-tag residuals. Warn when the RMS exceeds the threshold in `config.ts` (5 cm).
 - **R-5.4.4** On the residual list, the user can untick a tag to exclude it from the fit (for example, a tag that was physically moved), then refit. Excluded tags are still updated from the scan.
 
@@ -152,15 +153,16 @@ Alignment is always a **4-DoF** fit: rotation about the vertical axis (yaw) plus
 - **R-5.6.3** The user can edit user sets (see R-4.2 for built-in sets):
   - **Tag size** (mm, > 0) for each tag
   - **Pose**: x/y/z and yaw/pitch/roll, with numeric validation
-  - **Add tag**: by ID (a non-negative integer that is unique in the set), with a default pose at the origin
+  - **Add tag**: by ID (a non-negative integer that is unique in the set), with a default pose at the WPIBlue origin
   - **Delete tag**, with confirmation
 - **R-5.6.4** Edits are made on a draft, with explicit Save and Cancel. Cancel throws away the draft.
 - **R-5.6.5** Changing the `type` is not exposed (it is always `frc`).
 
 ### 5.7 2D top-down map
 
-- **R-5.7.1** A static SVG that scales to fit its container. It draws the field outline (dimensions come from the built-in set's metadata; when unknown, use a bounding box of the tags plus a margin), the field origin, and the axes.
-- **R-5.7.2** Each tag is drawn as a marker at (x, y) with an arrow showing its facing direction (the tag normal projected onto XY) and its ID label. Tapping a tag opens its details.
+- **R-5.7.1** An SVG map that fits its container; on the set detail Map tab it fills the space below the tag-count label. It draws the field outline (the set's field size, R-3.3.4, enlarged to include any tags outside it) and the WPIBlue origin and axes at the blue-alliance corner.
+- **R-5.7.4** Pinch to zoom (1x–12x, about the pinch point), drag to pan, double-tap to reset. Markers, labels and tap areas scale with the zoom; a tap selects the nearest tag within twice the marker radius.
+- **R-5.7.2** Each tag is drawn as a marker at (x, y) with an arrow showing its facing direction (the tag normal projected onto XY) and its ID label. Tapping a tag opens it in the editor (R-5.7.4).
 - **R-5.7.3** Comparison mode: old poses are drawn as hollow/grey markers and new poses as filled markers, with a line between them.
 
 ### 5.8 JSON view

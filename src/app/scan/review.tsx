@@ -7,6 +7,8 @@ import { Placeholder } from '@/components/Placeholder';
 import { TagTable } from '@/components/TagTable';
 import { spacing, useTheme } from '@/components/theme';
 import { Button, PromptDialog, Screen } from '@/components/ui';
+import { DEFAULT_FIELD } from '@/core/config';
+import { fromWpiBlue } from '@/core/fieldFrame';
 import { transformFromPose } from '@/core/pose';
 import { computeScanOutcome, freshResult, isoDate } from '@/core/session';
 import { nameError, uniqueName, useLibrary } from '@/state/library';
@@ -23,7 +25,7 @@ export default function ReviewScreen() {
   const fiducials = useMemo(() => {
     const reference = Object.entries(session.freshReferences).map(([id, pose]) => ({
       id: Number(id),
-      transform: transformFromPose(pose),
+      transform: fromWpiBlue(transformFromPose(pose), DEFAULT_FIELD),
     }));
     const outcome = computeScanOutcome(
       session.aggregated(),
@@ -39,8 +41,8 @@ export default function ReviewScreen() {
     <Screen>
       <ScrollView contentContainerStyle={styles.pad}>
         <Text style={{ color: t.text }}>{fiducials.length} tags placed in the field frame.</Text>
-        <FieldMap tags={fiducials} />
-        <TagTable fiducials={fiducials} />
+        <FieldMap tags={fiducials} field={DEFAULT_FIELD} style={{ aspectRatio: 1.3 }} />
+        <TagTable fiducials={fiducials} field={DEFAULT_FIELD} />
         <Button title="Save as new" onPress={() => setNaming(true)} />
         <Button
           title="Discard"
@@ -60,7 +62,7 @@ export default function ReviewScreen() {
         validate={(v) => nameError(v, userSets)}
         onCancel={() => setNaming(false)}
         onSubmit={async (name) => {
-          const set = await create(name, fiducials);
+          const set = await create(name, fiducials, DEFAULT_FIELD);
           setNaming(false);
           router.dismissAll();
           router.push(`/sets/${set.id}`);

@@ -24,7 +24,7 @@ interface ScanSessionState {
   paused: boolean;
   /** Tags excluded from the alignment fit (R-5.4.4). */
   excludedIds: number[];
-  /** Fresh mode: hand-entered field poses of the reference tags (R-5.4.2). */
+  /** Fresh mode: hand-entered WPIBlue field poses of the reference tags (R-5.4.2). */
   freshReferences: Record<number, PoseFields>;
 
   start: (mode: ScanMode, referenceSetId?: string) => void;

@@ -1,6 +1,7 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useTheme } from '@/components/theme';
 import { useLibrary } from '@/state/library';
@@ -14,7 +15,7 @@ export default function RootLayout() {
   }, [load]);
 
   return (
-    <>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <Stack
         screenOptions={{
           headerTransparent: false,
@@ -35,6 +36,6 @@ export default function RootLayout() {
         <Stack.Screen name="licenses" options={{ title: 'Licenses' }} />
       </Stack>
       <StatusBar style="auto" />
-    </>
+    </GestureHandlerRootView>
   );
 }

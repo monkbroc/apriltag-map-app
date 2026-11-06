@@ -1,19 +1,22 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { formatNumber, poseFromTransform } from '@/core/pose';
-import type { Fiducial } from '@/core/types';
+import { toWpiBlue } from '@/core/fieldFrame';
+import type { Fiducial, FieldDimensions } from '@/core/types';
 
 import { spacing, useTheme } from './theme';
 
 const columns = ['ID', 'x', 'y', 'z', 'yaw', 'pitch', 'roll', 'size', 'obs'] as const;
 const widths = [40, 64, 64, 56, 56, 56, 56, 60, 44];
 
-/** Tag table (R-5.6.2): positions in m, angles in degrees, size in mm. */
+/** Tag table (R-5.6.2): WPIBlue positions in m, angles in degrees, size in mm. */
 export function TagTable({
   fiducials,
+  field,
   onTagPress,
 }: {
   fiducials: readonly Fiducial[];
+  field: FieldDimensions;
   onTagPress?: (id: number) => void;
 }) {
   const t = useTheme();
@@ -36,7 +39,7 @@ export function TagTable({
           {columns.map((c, i) => cell(c, i, true))}
         </View>
         {fiducials.map((f) => {
-          const p = poseFromTransform(f.transform);
+          const p = poseFromTransform(toWpiBlue(f.transform, field));
           const values = [
             String(f.id),
             formatNumber(p.x),

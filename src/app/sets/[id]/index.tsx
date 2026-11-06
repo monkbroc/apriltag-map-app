@@ -1,6 +1,6 @@
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { FieldMap } from '@/components/FieldMap';
 import { JsonView } from '@/components/JsonView';
@@ -9,6 +9,7 @@ import { TagTable } from '@/components/TagTable';
 import { spacing, useTheme } from '@/components/theme';
 import { Placeholder } from '@/components/Placeholder';
 import { Button, Screen, SegmentedControl } from '@/components/ui';
+import { fieldOf } from '@/core/fieldFrame';
 import { findSet, useLibrary } from '@/state/library';
 
 type Tab = 'map' | 'table' | 'json';
@@ -74,14 +75,21 @@ export default function SetDetailScreen() {
         ]}
       />
       {tab === 'map' ? (
-        <ScrollView contentContainerStyle={styles.pad}>
-          <FieldMap tags={set.fiducials} field={set.field} onTagPress={editTag} />
-          <Text style={{ color: t.muted }}>{set.fiducials.length} tags. Tap a tag to edit it.</Text>
-        </ScrollView>
+        <View style={[styles.flex, styles.pad]}>
+          <Text style={{ color: t.muted }}>
+            {set.fiducials.length} tags. Tap a tag to edit it. Pinch to zoom, double-tap to reset.
+          </Text>
+          <FieldMap
+            tags={set.fiducials}
+            field={fieldOf(set)}
+            onTagPress={editTag}
+            style={styles.fillMap}
+          />
+        </View>
       ) : null}
       {tab === 'table' ? (
         <ScrollView contentContainerStyle={styles.pad}>
-          <TagTable fiducials={set.fiducials} onTagPress={editTag} />
+          <TagTable fiducials={set.fiducials} field={fieldOf(set)} onTagPress={editTag} />
         </ScrollView>
       ) : null}
       {tab === 'json' ? <JsonView fiducials={set.fiducials} /> : null}
@@ -94,4 +102,5 @@ export default function SetDetailScreen() {
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   pad: { padding: spacing.md, gap: spacing.md },
+  fillMap: { flex: 1, aspectRatio: undefined },
 });

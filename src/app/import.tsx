@@ -6,6 +6,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { spacing, useTheme } from '@/components/theme';
 import { Button, PromptDialog, Screen } from '@/components/ui';
+import { DEFAULT_FIELD } from '@/core/config';
 import { parseFmap, type ParseResult } from '@/core/fmap';
 import { nameError, uniqueName, useLibrary } from '@/state/library';
 
@@ -98,7 +99,7 @@ export default function ImportScreen({ pick = pickFmapFile }: { pick?: typeof pi
         onCancel={() => setNaming(false)}
         onSubmit={async (name) => {
           if (!picked?.result.ok) return;
-          const set = await create(name, picked.result.doc.fiducials);
+          const set = await create(name, picked.result.doc.fiducials, DEFAULT_FIELD);
           setNaming(false);
           router.replace(`/sets/${set.id}`);
         }}

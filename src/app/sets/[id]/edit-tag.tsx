@@ -7,9 +7,10 @@ import { Placeholder } from '@/components/Placeholder';
 import { spacing } from '@/components/theme';
 import { Button, Screen } from '@/components/ui';
 import { DEFAULT_TAG_SIZE_MM, TAG_FAMILY } from '@/core/config';
+import { fieldOf, fromWpiBlue, toWpiBlue } from '@/core/fieldFrame';
 import { IDENTITY4 } from '@/core/math';
 import { formatNumber, parseNumber, poseFromTransform, transformFromPose } from '@/core/pose';
-import type { Fiducial } from '@/core/types';
+import type { Fiducial, FieldDimensions } from '@/core/types';
 import { findSet, useLibrary } from '@/state/library';
 
 const FIELDS = [
@@ -23,8 +24,9 @@ const FIELDS = [
 
 type Draft = Record<'id' | 'size' | (typeof FIELDS)[number][0], string>;
 
-function draftFrom(f: Fiducial | undefined): Draft {
-  const p = poseFromTransform(f?.transform ?? IDENTITY4);
+/** Draft values are shown in WPIBlue; a new tag starts at the WPIBlue origin. */
+function draftFrom(f: Fiducial | undefined, field: FieldDimensions): Draft {
+  const p = poseFromTransform(f ? toWpiBlue(f.transform, field) : IDENTITY4);
   const fmt = (v: number) => formatNumber(v, 6);
   return {
     id: f ? String(f.id) : '',
@@ -46,7 +48,7 @@ export default function EditTagScreen() {
   const set = findSet(userSets, id);
   const isNew = tag === 'new';
   const existing = set?.fiducials.find((f) => String(f.id) === tag);
-  const [draft, setDraft] = useState<Draft>(() => draftFrom(existing));
+  const [draft, setDraft] = useState<Draft>(() => draftFrom(existing, fieldOf(set ?? {})));
 
   if (!set || set.builtin || (!isNew && !existing)) {
     return <Placeholder label="This tag cannot be edited." />;
@@ -75,14 +77,17 @@ export default function EditTagScreen() {
       size: num('size'),
       family: existing?.family ?? TAG_FAMILY,
       unique: existing?.unique ?? 1,
-      transform: transformFromPose({
-        x: num('x'),
-        y: num('y'),
-        z: num('z'),
-        yawDeg: num('yawDeg'),
-        pitchDeg: num('pitchDeg'),
-        rollDeg: num('rollDeg'),
-      }),
+      transform: fromWpiBlue(
+        transformFromPose({
+          x: num('x'),
+          y: num('y'),
+          z: num('z'),
+          yawDeg: num('yawDeg'),
+          pitchDeg: num('pitchDeg'),
+          rollDeg: num('rollDeg'),
+        }),
+        fieldOf(set),
+      ),
     };
     const others = set.fiducials.filter((f) => f !== existing);
     await update({ ...set, fiducials: [...others, fiducial].sort((a, b) => a.id - b.id) });

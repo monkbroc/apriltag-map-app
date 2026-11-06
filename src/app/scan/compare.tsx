@@ -7,6 +7,7 @@ import { FieldMap } from '@/components/FieldMap';
 import { Placeholder } from '@/components/Placeholder';
 import { spacing, useTheme } from '@/components/theme';
 import { Button, PromptDialog, Screen } from '@/components/ui';
+import { fieldOf } from '@/core/fieldFrame';
 import { formatNumber } from '@/core/pose';
 import { computeScanOutcome, isoDate, refineResult } from '@/core/session';
 import { findSet, nameError, uniqueName, useLibrary } from '@/state/library';
@@ -82,7 +83,12 @@ export default function CompareScreen() {
           </Text>
         </View>
 
-        <FieldMap tags={merged} previous={reference.fiducials} field={reference.field} />
+        <FieldMap
+          tags={merged}
+          previous={reference.fiducials}
+          field={fieldOf(reference)}
+          style={{ aspectRatio: 1.3 }}
+        />
         <Text style={{ color: t.muted }}>
           Grey: before. Blue: after. Yellow lines connect moved tags.
         </Text>

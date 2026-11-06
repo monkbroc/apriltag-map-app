@@ -38,3 +38,9 @@ export const TAG_FAMILY = 'apriltag3_36h11_classic';
 
 /** The only supported map type (R-3.1.2). */
 export const MAP_TYPE = 'frc';
+
+/**
+ * Field size used for WPIBlue coordinates when a set has no field of its own (fresh scans,
+ * imports): the FRC 2026 welded field, from WPILib.
+ */
+export const DEFAULT_FIELD = { lengthM: 16.541, widthM: 8.069 } as const;

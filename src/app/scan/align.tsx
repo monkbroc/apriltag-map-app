@@ -5,7 +5,8 @@ import { Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-nat
 import { NumberField, numberError } from '@/components/NumberField';
 import { spacing, useTheme } from '@/components/theme';
 import { Button, Screen } from '@/components/ui';
-import { MIN_OBSERVATIONS, RMS_WARN_M } from '@/core/config';
+import { DEFAULT_FIELD, MIN_OBSERVATIONS, RMS_WARN_M } from '@/core/config';
+import { fromWpiBlue } from '@/core/fieldFrame';
 import { formatNumber, parseNumber, transformFromPose, type PoseFields } from '@/core/pose';
 import { computeScanOutcome, OUTCOME_MESSAGES } from '@/core/session';
 import { findSet, useLibrary } from '@/state/library';
@@ -20,6 +21,7 @@ const POSE_KEYS = [
   ['rollDeg', 'Roll', '°'],
 ] as const;
 
+/** Default reference pose: the WPIBlue origin (blue-alliance corner), identity rotation. */
 const ORIGIN: PoseFields = { x: 0, y: 0, z: 0, yawDeg: 0, pitchDeg: 0, rollDeg: 0 };
 
 /** Inline editor for a fresh-mode reference tag's field pose (R-5.4.2). */
@@ -83,7 +85,7 @@ export default function AlignScreen() {
         ? (referenceSet?.fiducials ?? [])
         : Object.entries(freshReferences).map(([id, pose]) => ({
             id: Number(id),
-            transform: transformFromPose(pose),
+            transform: fromWpiBlue(transformFromPose(pose), DEFAULT_FIELD),
           })),
     [mode, referenceSet, freshReferences],
   );
@@ -99,7 +101,7 @@ export default function AlignScreen() {
         <Text style={{ color: t.text }}>
           {mode === 'refine'
             ? `Scanned tags are fitted onto "${referenceSet?.name ?? 'the reference set'}". Untick a tag that was physically moved so it does not skew the fit; it is still updated from the scan.`
-            : 'Turn on one or more reference tags and type in their field poses. Every other tag is placed relative to them.'}
+            : 'Turn on one or more reference tags and type in their field poses (WPIBlue: origin at the blue-alliance corner). Every other tag is placed relative to them.'}
         </Text>
 
         {outcome.ok ? (
