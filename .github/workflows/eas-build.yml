@@ -26,7 +26,8 @@ jobs:
     env:
       EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
       PROFILE: ${{ inputs.profile || 'production' }}
-      PLATFORM: ${{ inputs.platform || 'all' }}
+      # Tag pushes build Android only until iOS credentials are set up; manual runs can pick any.
+      PLATFORM: ${{ inputs.platform || 'android' }}
     steps:
       - name: Skip when EXPO_TOKEN is not configured
         if: env.EXPO_TOKEN == ''

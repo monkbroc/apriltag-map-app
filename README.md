@@ -105,7 +105,8 @@ install a new release build (or use EAS Update, which is not set up in this proj
    - Android, locally: `npm run build:android`, then `adb install -r <apk>` or share the APK.
    - iOS: `npm run build:ios:cloud` from Windows (or `npm run build:ios` on a Mac).
    - Or tag the commit (`git tag v1.2.0 && git push --tags`) and let CI run the EAS production
-     build for both platforms.
+     build (Android only for now; run the EAS Build workflow manually with `ios` or `all` once
+     iOS credentials are set up).
 
 | Command                       | Where it runs                   | Output                                                  |
 | ----------------------------- | ------------------------------- | ------------------------------------------------------- |
